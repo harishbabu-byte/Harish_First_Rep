@@ -1,15 +1,20 @@
 
-name: My CI Workflow
- 
-on: 
-push: 
-  branches: ["main"]
- 
+# .github/workflows/First_workflow.yml
+name: First CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
-build:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v4
- 
-    - name: Run a script
-      run: echo "Hello SRE GitHub"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sanity check
+        run: echo "Yahoo It works"
+
