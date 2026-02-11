@@ -20,9 +20,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Print message
-        run: echo "GitHub Actions working!"
+        run: echo "GitHub Actions Multiple_Event_Triggers!"
 
-      - name: List repository files
+      - name: All List repository files
         run: ls -al
 
       - name: Show system info
