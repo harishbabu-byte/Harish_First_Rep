@@ -1,0 +1,30 @@
+name: Multiple_Event_Triggers
+
+on:
+  push:
+    branches:
+      - main        # Trigger on any push to main
+  pull_request:
+    branches:
+      - main        # Trigger for PRs created against main
+  workflow_dispatch:  # Allow manual trigger from Actions tab
+
+jobs:
+  demo-job:
+    name: CI Demo Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Print message
+        run: echo "GitHub Actions working!"
+
+      - name: List repository files
+        run: ls -al
+
+      - name: Show system info
+        run: |
+          pwd
+          uname -a
