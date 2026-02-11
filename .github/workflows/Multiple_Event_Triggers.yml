@@ -23,7 +23,7 @@ jobs:
         run: echo "GitHub Actions Multiple_Event_Triggers!"
 
       - name: All List repository files
-        run: ls -al
+        run: ls -al | wc -l
 
       - name: Show system info
         run: |
