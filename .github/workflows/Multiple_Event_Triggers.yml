@@ -1,3 +1,4 @@
+
 name: Multiple_Event_Triggers
 
 on:
@@ -11,7 +12,7 @@ on:
 
 jobs:
   demo-job:
-    name: CI Demo Job
+    name: Multiple_Event_Triggers Job
     runs-on: ubuntu-latest
 
     steps:
