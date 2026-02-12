@@ -1,0 +1,60 @@
+name: Deploy Using Self Hosted Runner (Windows)
+ 
+on:
+  workflow_dispatch:
+ 
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Build application (example)
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path release | Out-Null
+          "Hello World" | Set-Content -Path release/app.txt -Encoding UTF8
+ 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: release/
+ 
+  deploy:
+    needs: build
+    runs-on: [self-hosted, windows]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      # Corporate SSL-friendly artifact download (only this step relaxes TLS)
+      - name: Download artifact (corporate SSL safe)
+        uses: actions/download-artifact@v4
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
+        with:
+          name: build-output
+          path: release
+ 
+      # IMPORTANT: use CMD as the shell; call PowerShell with ExecutionPolicy Bypass
+      - name: Verify release files (via cmd → PowerShell)
+        shell: cmd
+        run: >
+          powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass
+          -Command "Write-Host 'Listing release contents...';
+          if (Test-Path 'release') { Get-ChildItem -Recurse -Force 'release' }
+          else { throw 'Release folder does not exist!' }"
+ 
+      - name: Deploy (via cmd → PowerShell)
+        shell: cmd
+        run: >
+          powershell -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass
+          -Command "$dest='C:\deployed-app';
+          if (!(Test-Path 'release')) { throw 'Release folder missing — cannot deploy.' };
+          Write-Host 'Creating destination:' $dest;
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null;
+          Write-Host 'Copying files to' $dest '...';
+          Copy-Item -Path 'release\*' -Destination $dest -Recurse -Force;
+          Write-Host 'Deployment completed successfully!'"
