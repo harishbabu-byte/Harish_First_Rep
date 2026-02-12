@@ -9,6 +9,7 @@ on:
       - '!docs/**'
       - '!.github/**'
       - '!**/*.md'
+workflow_dispatch:   # <-- allows manual trigger
 
 env:
   NODE_ENV: ci
