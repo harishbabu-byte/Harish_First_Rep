@@ -1,0 +1,30 @@
+name: Feature Branch CI
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+    paths:
+      - 'app/**'
+      - '!docs/**'
+      - '!.github/**'
+      - '!**/*.md'
+
+env:
+  NODE_ENV: ci
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show NODE_ENV
+        run: echo "NODE_ENV is $NODE_ENV"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
