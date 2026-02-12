@@ -7,9 +7,8 @@ on:
     paths:
       - 'app/**'
       - '!docs/**'
-      - '!.github/**'
       - '!**/*.md'
-workflow_dispatch:   # <-- allows manual trigger
+  workflow_dispatch:   # <-- must align with push
 
 env:
   NODE_ENV: ci
