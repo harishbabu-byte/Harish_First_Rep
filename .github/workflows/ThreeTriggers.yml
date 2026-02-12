@@ -1,0 +1,30 @@
+name: Trigger Exploration Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"   # runs daily at midnight
+
+jobs:
+  identify-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo trigger source
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "Workflow triggered by PUSH"
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "Workflow triggered by PULL REQUEST"
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Workflow triggered by MANUAL DISPATCH"
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            echo "Workflow triggered by SCHEDULE (CRON)"
+          else
+            echo "Workflow triggered by another event"
+          fi
