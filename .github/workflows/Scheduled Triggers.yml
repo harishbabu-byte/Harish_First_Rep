@@ -9,7 +9,7 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"   # runs daily at midnight
+    - cron: "52 10 * * *"   # runs daily at midnight
 
 jobs:
   identify-trigger:
